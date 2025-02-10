@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="site-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Sign Up To WorkHub</h2>
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for="{{ form.username.auto_id }}">Username</label>
+                            <input type="text" class="form-control"
+                                   name="{{ form.username.name }}"
+                                   id="{{ form.username.auto_id }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for="{{ form.user_type.auto_id }}">Your role</label>
+                            <select class="form-control" name="{{ form.user_type.name }}" id="{{ form.user_type.auto_id }}" required>
+    {% for choice in form.user_type.field.choices %}
+        {% if forloop.counter <= 3 %}
+            <option value="{{ choice.0 }}" {% if choice.0 == form.user_type.value %}selected{% endif %}>
+                {{ choice.1 }}
+            </option>
+        {% endif %}
+    {% endfor %}
+</select>
+                        </div>
+                    </div>
+
+
+                    <div class="row form-group">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for="{{ form.password1.auto_id }}">Password</label>
+                            <input type="password" class="form-control"
+                                   name="{{ form.password1.name }}" id="{{ form.password1.auto_id }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row form-group mb-4">
+                        <div class="col-md-12 mb-3 mb-md-0">
+                            <label class="text-black" for="{{ form.password2.auto_id }}">Re-Type Password</label>
+                            <input type="password" class="form-control"
+                                   name="{{ form.password2.name }}" id="{{ form.password2.auto_id }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <input type="submit" value="Sign Up" class="btn px-4 btn-primary text-white">
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

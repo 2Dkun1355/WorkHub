@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="section py-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="widget personal-info p-4 bg-white rounded shadow-sm">
+                    {% include 'account/navbar.html' %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label">{{ form.profile_title.label }}</label>
+                                    {{ form.profile_title }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ form.profile_info.label }}</label>
+                                    {{ form.profile_info }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ form.skills.label }}</label>
+                                    {{ form.skills }}
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">{{ form.english_level.label }}</label>
+                                    {{ form.english_level }}
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ form.location.label }}</label>
+                                        {{ form.location }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ form.year_experience.label }}</label>
+                                        {{ form.year_experience }}
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ form.salary_expectations.label }}</label>
+                                        {{ form.salary_expectations }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">{{ form.hourly_rate.label }}</label>
+                                        {{ form.hourly_rate }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

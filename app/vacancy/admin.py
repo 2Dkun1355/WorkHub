@@ -1,3 +1,7 @@
 from django.contrib import admin
+from vacancy.models import Vacancy
 
-# Register your models here.
+class VacancyInline(admin.TabularInline):
+    model = Vacancy
+    extra = 1
+    fields = ('title',)

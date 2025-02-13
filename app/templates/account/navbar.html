@@ -6,7 +6,7 @@
                 <i></i> My Account
             </a>
             <a href="{% url 'profile' %}"
-               class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+               class="nav-link {% if request.resolver_match.url_name == 'seeker_profile' %}active{% endif %}">
                 <i></i> Profile
             </a>
             <a href="" class="nav-link {% if request.resolver_match.url_name == 'settings' %}active{% endif %}">

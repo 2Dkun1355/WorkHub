@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="site-section">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="d-flex align-items-center">
+                    <div class="border d-inline-block mr-3 rounded">
+                        <img src="{{ profile.user.get_photo_url }}" alt="Image" class="img-fluid"
+                             style="max-width: 150px; height: auto;">
+                    </div>
+                    <div>
+                        <h2>{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+                        <div>
+                            <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>{{ profile.title }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="mb-5">
+                    <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Description
+                    </h3>
+                    <ul class="list-unstyled m-0 p-0">
+                        <li class="d-flex align-items-start mb-2"><span
+                                class="icon-check_circle mr-2 text-muted"></span><span>{{ profile.description }}</span>
+                    </ul>
+                </div>
+                <div class="mb-5">
+                    <h3 class="h5 d-flex align-items-center mb-4 text-primary">
+                        <span class="icon-book mr-3"></span>Skills
+                    </h3>
+                    <ul class="list-unstyled m-0 p-0 d-flex flex-wrap">
+                        {% for skill in profile.skills.all %}
+                        <li class="d-flex align-items-start mb-2"><span
+                                class="icon-check_circle mr-2 text-muted"></span><span>{{ skill.name }}</span>
+                        {% empty %}
+                            <li class="d-flex align-items-start mb-2"><span
+                                class="icon-check_circle mr-2 text-muted"></span><span>No skills</span>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="bg-light p-3 border rounded mb-4">
+                    <h3 class="text-primary  mt-3 h5 pl-3 mb-3 ">${{ profile.salary_expectations }} / month</h3>
+                    <ul class="list-unstyled pl-3 mb-0">
+                        <li class="mb-2"><strong class="text-black">Location:</strong> {{ profile.location }}</li>
+                        <li class="mb-2"><strong class="text-black">Year experience:</strong> {{ profile.year_experience}}</li>
+                        <li class="mb-2"><strong class="text-black">English level:</strong> {{ profile.get_english_level_display }}</li>
+<li class="mb-2"><strong class="text-black">Job format:</strong> {% for format in profile.job_format.all %}{{ format }}{% if not forloop.last %}, {% endif %}{% endfor %}</li>
+
+                        <li class="mb-2"><strong class="text-black">Publication:</strong> {{ profile.updated_at.date }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -3,10 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, DetailView
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import UserRegisterForm, JobSeekerForm, UserForm
-from .models import JobSeekerProfile
+from .forms import UserRegisterForm, JobSeekerForm, UserForm, JobEmployerForm
+from .models import User, JobSeekerProfile, JobEmployerProfile
 
 class UserLoginView(LoginView):
     template_name = "auth/login.html"
@@ -15,7 +15,10 @@ class UserLoginView(LoginView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'Login'
+        context.update({
+            'title': 'Welcome back',
+            'page': 'Login',
+        })
         return context
 
 class UserSingUpView(CreateView):
@@ -30,7 +33,10 @@ class UserSingUpView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['page'] = 'SingUp'
+        context.update({
+            'title': 'Welcome to our website',
+            'page': 'SingUp',
+        })
         return context
 
 class UserAccountView(LoginRequiredMixin, View):
@@ -40,6 +46,7 @@ class UserAccountView(LoginRequiredMixin, View):
         form = UserForm(instance=request.user)
         return render(request, self.template_name, {
             'form': form,
+            "title": f"Account for {request.user.username}",
             'page': 'Account'
         })
 
@@ -50,30 +57,73 @@ class UserAccountView(LoginRequiredMixin, View):
             return redirect('account')
         return render(request, self.template_name, {
             'form': form,
+            "title": f"Account for {request.user.username}",
             'page': 'Account'
         })
 
-class JobSeekerProfileView(LoginRequiredMixin, View):
-    template_name = "account/seeker_profile.html"
+class UserProfileView(LoginRequiredMixin, View):
+    templates = {
+        "job_seeker": "account/seeker_profile.html",
+        "job_employer": "account/employer_profile.html",
+    }
+
+    profile_map = {
+        "job_seeker": (JobSeekerProfile, JobSeekerForm),
+        "job_employer": (JobEmployerProfile, JobEmployerForm),
+    }
 
     def get(self, request, *args, **kwargs):
-        profile = get_object_or_404(JobSeekerProfile, user=request.user)
-        form = JobSeekerForm(instance=profile)
-        return render(request, self.template_name, {
-            'form': form,
-            'page': 'Profile'
+        profile_class, form_class = self.profile_map.get(request.user.user_type, (None, None))
+        template = self.templates.get(request.user.user_type)
+
+        profile = get_object_or_404(profile_class, user=request.user)
+        form = form_class(instance=profile)
+
+        return render(request, template, {
+            "form": form,
+            "title": f"Profile for {request.user.username}",
+            "page": "Profile"
         })
 
     def post(self, request, *args, **kwargs):
-        profile = get_object_or_404(JobSeekerProfile, user=request.user)
-        form = JobSeekerForm(request.POST, instance=profile)
+        profile_class, form_class = self.profile_map.get(request.user.user_type, (None, None ))
+        template = self.templates.get(request.user.user_type)
+
+        profile = get_object_or_404(profile_class, user=request.user)
+        form = form_class(request.POST, instance=profile)
+
         if form.is_valid():
             profile = form.save(commit=False)
             profile.user = request.user
             profile.save()
             form.save_m2m()
             return redirect('profile')
-        return render(request, self.template_name, {
-            'form': form,
-            'page': 'Profile'
+
+        return render(request, template, {
+            "form": form,
+            "title": f"Profile for {request.user.username}",
+            "page": "Profile"
+        })
+
+class UserDetailView(DetailView):
+    templates = {
+        "job_seeker": "account/seeker_details.html",
+        "job_employer": "account/employer_details.html",
+    }
+
+    profile_map = {
+        "job_seeker": JobSeekerProfile,
+        "job_employer": JobEmployerProfile,
+    }
+
+    def get(self, request, *args, **kwargs):
+        user = get_object_or_404(User, username=self.kwargs["username"])
+        profile_class = self.profile_map.get(user.user_type)
+        template = self.templates.get(user.user_type)
+        profile = get_object_or_404(profile_class, user=user)
+
+        return render(request, template, {
+            "profile": profile,
+            "title": f"Details for {user.username}",
+            "page": "Details"
         })

@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class VacancyConfig(AppConfig):
+class CommonConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'vacancy'
-    verbose_name = 'Вакансії'
+    name = 'common'
+    verbose_name = 'Додатково'

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="site-section">
+    <div class="container">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-8 mb-4 mb-lg-0">
+                <div class="d-flex align-items-center">
+                    <div class="border d-inline-block mr-3 rounded">
+                        <img src="{{ profile.get_logo_url }}" alt="Image" class="img-fluid"
+                             style="max-width: 150px; height: auto;">
+                    </div>
+                    <div>
+                        <h2>{{ profile.company_name }}</h2>
+                        <div>
+                            <span class="ml-0 mr-2 mb-2"><span class="icon-briefcase mr-2"></span>Since {{ profile.created_at.date.year }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="mb-5">
+                    <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Description
+                    </h3>
+                    <ul class="list-unstyled m-0 p-0">
+                        <li class="d-flex align-items-start mb-2"><span
+                                class="icon-check_circle mr-2 text-muted"></span><span>{{ profile.company_description }}</span>
+                    </ul>
+                </div>
+                <div class="mb-5">
+                    <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Vacancy
+                    </h3>
+                    <ul class="list-unstyled m-0 p-0">
+                        <li class="d-flex align-items-start mb-2"><span
+                                class="icon-check_circle mr-2 text-muted"></span><span>{% for vacancy in profile.vacancy.all %}
+    <p>{{ vacancy.title }}</p>
+{% endfor %}</span>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

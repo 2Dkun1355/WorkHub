@@ -1,0 +1,21 @@
+<div class="custom-pagination ml-auto">
+    <!-- Prev Button -->
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}" class="prev">Prev</a>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    <div class="d-inline-block">
+        {% for page in page_obj.paginator.page_range %}
+        {% if page_obj.paginator.num_pages > 1 %}
+        <a href="?page={{ page }}" class="{% if page == page_obj.number %}active{% endif %}">{{ page }}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- Next Button -->
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="next">Next</a>
+    {% endif %}
+</div>
+

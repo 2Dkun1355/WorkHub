@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block content %}
+{% include 'banner_default.html' %}
+
 <section class="site-section">
     <div class="container">
         <div class="row align-items-center mb-5">
@@ -25,20 +27,37 @@
                 <div class="mb-5">
                     <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Description
                     </h3>
-                    <ul class="list-unstyled m-0 p-0">
-                        <li class="d-flex align-items-start mb-2"><span
-                                class="icon-check_circle mr-2 text-muted"></span><span>{{ profile.company_description }}</span>
-                    </ul>
+                    <p>{{ profile.company_description }}</p>
                 </div>
                 <div class="mb-5">
                     <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Vacancy
                     </h3>
-                    <ul class="list-unstyled m-0 p-0">
-                        <li class="d-flex align-items-start mb-2"><span
-                                class="icon-check_circle mr-2 text-muted"></span><span>{% for vacancy in profile.vacancy.all %}
-    <p>{{ vacancy.title }}</p>
-{% endfor %}</span>
+                    <ul class="job-listings mb-5">
+                        {% for vacancy in profile.vacancy.all %}
+                        <li class="job-listing d-block d-sm-flex pb-3 pb-sm-0 align-items-center">
+                            <a href="{% url 'vacancy_detail' vacancy.slug %}"></a>
+
+                            <div class="job-listing-about d-sm-flex custom-width w-100 justify-content-between mx-4">
+                                <div class="job-listing-position custom-width mb-3 mb-sm-0">
+                                    <h2 style="font-size: 24px;">{{ vacancy.title }}</h2>
+                                    <strong>{{ vacancy.description|truncatechars:250 }}</strong>
+
+                                </div>
+                                <div class="job-listing-meta">
+                        {% if vacancy.is_active %}
+                        <span class="badge badge-success">{{ vacancy.created_at.date }}</span>
+                        {% else %}
+                        <span class="badge badge-danger">{{ vacancy.created_at.date }}</span>
+                        {% endif %}
+                    </div>
+                            </div>
+
+                        </li>
+                        {% endfor %}
                     </ul>
+                    <div class="col-md-6 text-center text-md-right">
+                {% include 'pagination.html' %}
+            </div>
                 </div>
             </div>
         </div>

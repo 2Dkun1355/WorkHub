@@ -2,6 +2,8 @@
 {% load static %}
 
 {% block content %}
+{% include 'banner_default.html' %}
+
 <section class="site-section">
     <div class="container">
         <div class="row align-items-center mb-5">
@@ -25,24 +27,18 @@
                 <div class="mb-5">
                     <h3 class="h5 d-flex align-items-center mb-4 text-primary"><span class="icon-rocket mr-3"></span>Description
                     </h3>
-                    <ul class="list-unstyled m-0 p-0">
-                        <li class="d-flex align-items-start mb-2"><span
-                                class="icon-check_circle mr-2 text-muted"></span><span>{{ profile.description }}</span>
-                    </ul>
+                    <p>{{ profile.description }}</p>
                 </div>
                 <div class="mb-5">
                     <h3 class="h5 d-flex align-items-center mb-4 text-primary">
                         <span class="icon-book mr-3"></span>Skills
                     </h3>
-                    <ul class="list-unstyled m-0 p-0 d-flex flex-wrap">
                         {% for skill in profile.skills.all %}
-                        <li class="d-flex align-items-start mb-2"><span
-                                class="icon-check_circle mr-2 text-muted"></span><span>{{ skill.name }}</span>
+                        {{ skill.name }}
                         {% empty %}
-                            <li class="d-flex align-items-start mb-2"><span
-                                class="icon-check_circle mr-2 text-muted"></span><span>No skills</span>
+                            No skills
                         {% endfor %}
-                    </ul>
+                    </p>
                 </div>
             </div>
             <div class="col-lg-4">
